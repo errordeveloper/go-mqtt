@@ -26,6 +26,10 @@ func openConnection(uri *url.URL, tlsc *tls.Config) (conn net.Conn, err error) {
 	switch uri.Scheme {
 	case "ws":
 		conn, err = websocket.Dial(uri.String(), "mqttv3.1", "ws://localhost")
+                if err != nil {
+                  return
+                }
+                conn.(*websocket.Conn).PayloadType = websocket.BinaryFrame
 	case "tcp":
 		conn, err = net.Dial("tcp", uri.Host)
 	case "ssl":
